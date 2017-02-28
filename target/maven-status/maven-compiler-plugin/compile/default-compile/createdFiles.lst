@@ -1,5 +1,0 @@
-com\zh\controller\UserController.class
-com\zh\service\IUserService.class
-com\zh\service\impl\IUserServiceImpl.class
-com\zh\model\User.class
-com\zh\dao\UserMapper.class

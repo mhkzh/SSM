@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.zh.model.User;
+import com.zh.redis.cache.GetCache;
+import com.zh.redis.cache.PutCache;
 import com.zh.service.IUserService;
 
 
@@ -34,6 +37,7 @@ public class UserController {
     private IUserService userService;     
 	
     // /user/test?id=1
+    @PutCache(name="newsList",value="com.zh.UserController.showUser(String).123")  
     @RequestMapping(value="/test",method=RequestMethod.GET)  
     public String test(HttpServletRequest request,Model model){  
         int userId = Integer.parseInt(request.getParameter("id"));  
@@ -52,16 +56,21 @@ public class UserController {
         return "index";  
     }
     
+    
     // /user/showUser?id=1
     // 从请求里面获取参数
+    @GetCache(name="newsList",value="com.zh.UserController.showUser(String).123")  
     @RequestMapping(value="/showUser",method=RequestMethod.GET)  
+    @ResponseBody
     public String toIndex(HttpServletRequest request,Model model){  
         int userId = Integer.parseInt(request.getParameter("id"));  
         System.out.println("userId:"+userId);
         User user = this.userService.getUserByIdTest(userId);  
         log.debug(user.toString());
-        model.addAttribute("user", user);  
-        return "showUser";  
+        String json = JSON.toJSONString(user);
+        return json;
+        //model.addAttribute("user", user);  
+        //return "showUser";  
     }  
     
     // /user/showUser2?id=1

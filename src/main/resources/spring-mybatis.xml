@@ -12,11 +12,16 @@
     <!-- 自动扫描 -->  
     <context:component-scan base-package="com.zh.*" />  
     
-    <!-- 引入配置文件 -->  
-    <bean id="propertyConfigurer"  
-        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="location" value="classpath:jdbc.properties" />  
-    </bean>  
+  <!-- 引入properties配置文件 -->    
+	 <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="locations">  
+	        <list>  
+	           <value>classpath:config/jdbc.properties</value>
+	           <value>classpath:config/redis.properties</value>    
+	            <!--要是有多个配置文件，只需在这里继续添加即可 -->  
+	        </list>  
+	    </property>  
+	</bean>  
   
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"  
         destroy-method="close">  
@@ -54,5 +59,42 @@
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
         <property name="dataSource" ref="dataSource" />  
     </bean>  
-  
+    
+    <!-- Redis和缓存配置开始 -->
+	<!-- jedis 配置 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >
+	      <property name="maxIdle" value="${redis.maxIdle}" />
+	      <property name="maxWaitMillis" value="${redis.maxWait}" />
+	      <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean >
+	
+	<!-- redis服务器中心 -->
+	<bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
+	      <property name="poolConfig" ref="poolConfig" />
+	      <property name="port" value="${redis.port}" />
+	      <property name="hostName" value="${redis.host}" />
+	      <!-- <property name="password" value="${redis.password}" /> -->
+	      <property name="timeout" value="${redis.timeout}" ></property>
+	</bean >
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
+	      <property name="connectionFactory" ref="connectionFactory" />
+	      <property name="keySerializer" >
+	          <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	      </property>
+	      <property name="valueSerializer" >
+	          <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	      </property>
+	</bean >
+	
+    <!-- cache配置插入、更新数据时从redis中清除缓存 -->  
+    <bean id="putCache" class="com.zh.redis.cache.PutCacheAOP" >  
+         <property name="redisTemplate" ref="redisTemplate" />
+    </bean>  
+    
+    <!-- cache配置从redis获取缓存数据 -->  
+    <bean id="getCache" class="com.zh.redis.cache.GetCacheAOP" >  
+          <property name="redisTemplate" ref="redisTemplate" />
+    </bean>  
+	 
+	<!-- Redis和缓存配置结束 -->
 </beans>  
