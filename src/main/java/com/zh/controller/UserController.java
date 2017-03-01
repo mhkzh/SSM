@@ -59,7 +59,7 @@ public class UserController {
     
     // /user/showUser?id=1
     // 从请求里面获取参数
-    @GetCache(name="newsList",value="com.zh.UserController.showUser(String).123")  
+    //@GetCache(name="newsList",value="com.zh.UserController.showUser(String).123")  
     @RequestMapping(value="/showUser",method=RequestMethod.GET)  
     @ResponseBody
     public String toIndex(HttpServletRequest request,Model model){  

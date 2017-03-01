@@ -79,7 +79,7 @@
         <property name="suffix" value=".jsp" />  
     </bean>  
     
-    <!-- 激活自动代理功能 -->
+    <!-- 激活自动代理功能，开启注解 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>  
     <!-- 解决使用@ResponseBody 的中文乱码。 -->  
     <bean class="com.zh.common.UTF8StringBeanPostProcessor"></bean>  

@@ -27,7 +27,8 @@
         <!-- 通俗的讲，slf4j是个数据线，一端嵌入程序，另一端链接日志系统，从而实现将程序中的信息导入到日志系统并记录。 -->
         <slf4j.version>1.7.7</slf4j.version>  
         <!-- log4j是具体的日志系统。通过slf4j-log4j12初始化Log4j，达到最终日志的输出。 -->
-        <log4j.version>1.2.17</log4j.version>  
+        <log4j.version>1.2.17</log4j.version> 
+        <druid-version>1.0.28</druid-version> 
   </properties> 
   
   <!-- 该元素描述了项目相关的所有依赖。 这些依赖组成了项目构建过程中的一个个环节。 -->
@@ -155,12 +156,21 @@
             <artifactId>mysql-connector-java</artifactId>  
             <version>5.1.36</version>  
         </dependency>   
-  <!-- 导入dbcp(数据库连接池)的jar包，用来在applicationContext.xml中配置数据库 -->  
+        
+  <!-- 导入dbcp(数据库连接池)的jar包，用来在applicationContext.xml中配置数据库 
         <dependency>  
             <groupId>commons-dbcp</groupId>  
             <artifactId>commons-dbcp</artifactId>  
             <version>1.2.2</version>  
-        </dependency>  
+        </dependency>  -->
+          
+  <!-- druid数据库连接池 -->
+        <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>${druid-version}</version>
+    	</dependency>
+    	
    <!-- JSTL标签类 -->  
         <dependency>  
             <groupId>jstl</groupId>  
