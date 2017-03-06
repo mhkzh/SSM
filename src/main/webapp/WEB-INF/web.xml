@@ -4,7 +4,7 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-   <!-- Spring和mybatis的配置文件 -->  
+	<!-- Spring和mybatis的配置文件 -->  
    <context-param>  
         <param-name>contextConfigLocation</param-name>  
         <param-value>classpath:spring-mybatis.xml</param-value>  
@@ -23,7 +23,22 @@
     <filter-mapping>  
         <filter-name>encodingFilter</filter-name>  
         <url-pattern>/*</url-pattern>  
-    </filter-mapping>  
+    </filter-mapping>
+    <!-- shiro过滤器定义 -->
+	<filter>
+	    <filter-name>shiroFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	    <init-param>
+	        <!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 -->
+	        <param-name>targetFilterLifecycle</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	</filter>
+	<!-- 拦截所有请求 -->
+	<filter-mapping>
+	    <filter-name>shiroFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
    <!-- Spring监听器,配合它一起使用的，经常是context-param，用来指定Spring要加载的配置文件，本质上是创建了一个 WebApplicationContext-->  
    <listener>  
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
@@ -58,11 +73,21 @@
 	  <filter-name>DruidWebStatFilter</filter-name>  
 	  <url-pattern>/*</url-pattern>  
 	</filter-mapping>  
+	<welcome-file-list>
+        <welcome-file>/login.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- 配置SESSION超时，单位是分钟 -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    
   <!-- 监控jsp和do请求，exclusions参数其实可以去掉的 end -->
   <!-- druid end-->  
-  
   <!-- Spring MVC servlet -->
   <!-- DispatcherServlet则定义了mvc的相关内容，并配置拦截的url，所有/开头的请求，都会通过SpringMVC这个servlet进行处理。 -->
+  <!-- 如果你的DispatcherServlet拦截"*.do"这样的有后缀的URL，就不存在访问不到静态资源的问题。 -->
+  <!-- 如果你的DispatcherServlet拦截"/"，为了实现REST风格，拦截了所有的请求，那么同时对*.js,*.jpg等静态文件的访问也就被拦截了。-->
+  <!-- 激活Tomcat的defaultServlet来处理静态文件，如下面<servlet-name>default</servlet-name>所配 -->
   <!-- Servlet拦截匹配规则要自已定义，把拦截下来的请求，交给对于对应的@RequestMapping方法进行处理,也就是依据某某规则分发到目标Controller(我们写的Action)来处理。 -->  
     <servlet>  
         <servlet-name>SpringMVC</servlet-name>  
@@ -80,7 +105,49 @@
         <url-pattern>/</url-pattern>  
     </servlet-mapping>  
     <welcome-file-list>  
-        <welcome-file>/index.jsp</welcome-file>  
+        <welcome-file>/turnToIndex.jsp</welcome-file>  
     </welcome-file-list>  
+    <error-page>
+        <error-code>404</error-code>
+        <location>/notfound.jsp</location>
+    </error-page>
     
+   <!-- 确保静态资源可以被访问,对客户端请求的静态资源如图片、
+        JS文件等的请求交由默认的servlet进行处理,不然访问会报404 -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.gif</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.swf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.txt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ico</url-pattern>
+    </servlet-mapping>
 </web-app>

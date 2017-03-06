@@ -83,4 +83,6 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>  
     <!-- 解决使用@ResponseBody 的中文乱码。 -->  
     <bean class="com.zh.common.UTF8StringBeanPostProcessor"></bean>  
+    
+    
 </beans>
