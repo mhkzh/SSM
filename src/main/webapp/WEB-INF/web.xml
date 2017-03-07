@@ -81,6 +81,16 @@
         <session-timeout>30</session-timeout>
     </session-config>
     
+    <!--定义一个cxf的servlet,访问webservice/*这个地址就会进入CXF的servlet中。-->
+	<servlet>
+	    <servlet-name>CXFServlet</servlet-name>
+	    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>CXFServlet</servlet-name>
+	    <url-pattern>/webservice/*</url-pattern>
+	</servlet-mapping>
+
   <!-- 监控jsp和do请求，exclusions参数其实可以去掉的 end -->
   <!-- druid end-->  
   <!-- Spring MVC servlet -->

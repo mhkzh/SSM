@@ -247,7 +247,24 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.2.5</version>
         </dependency>
-  </dependencies>
+        <!--cxf CXF是apache旗下的开源框架，由Celtix + XFire这两门经典的框架合成，是一套非常流行的web service框架。 start-->
+		<dependency>
+	    <groupId>org.apache.cxf</groupId>
+	    <artifactId>cxf-rt-frontend-jaxws</artifactId>
+	    <version>3.0.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-core</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.cxf</groupId>
+		    <artifactId>cxf-rt-transports-http</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+	  <!--cxf end-->
+	  </dependencies>
   <!--构建项目需要的信息--> 
   <build>
     <finalName>mavenDemo</finalName>
