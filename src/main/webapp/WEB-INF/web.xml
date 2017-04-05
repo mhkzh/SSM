@@ -7,7 +7,7 @@
 	<!-- Spring和mybatis的配置文件 -->  
    <context-param>  
         <param-name>contextConfigLocation</param-name>  
-        <param-value>classpath:spring-mybatis.xml</param-value>  
+        <param-value>classpath:spring-*.xml</param-value>  
     </context-param>  
     <!-- 编码过滤器  Spring中的字符编码过滤器（CharacterEncodingFilter），可以很方便的为我们解决项目中出现的中文乱码问题；-->  
     <filter>  

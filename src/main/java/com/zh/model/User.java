@@ -1,6 +1,9 @@
 package com.zh.model;
 
-public class User {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class User implements Serializable{
     private Integer id;
 
     private String userName;

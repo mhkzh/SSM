@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.map.util.JSONPObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.zh.model.User;
-import com.zh.redis.cache.GetCache;
 import com.zh.redis.cache.PutCache;
+import com.zh.service.DubboTestService;
 import com.zh.service.IUserService;
 
 
@@ -34,7 +35,12 @@ import com.zh.service.IUserService;
 public class UserController {
 	private static Logger log = LoggerFactory.getLogger(UserController.class);
     @Resource  
-    private IUserService userService;     
+    private IUserService userService; 
+    
+	@Resource
+	//这里其实是由dubbo远程调用得到的对象
+	private DubboTestService dubboTestService;
+
 	
     // /user/test?id=1
     @PutCache(name="newsList",value="com.zh.UserController.showUser(String).123")  
@@ -131,6 +137,26 @@ public class UserController {
         }
         FileUtils.copyInputStreamToFile(file.getInputStream(), new File("E:\\",System.currentTimeMillis()+file.getOriginalFilename()));
         return "succes";
+    }
+    
+    //跨域问题
+    @RequestMapping(value = "/jsonpInfo",method = { RequestMethod.GET })
+    @ResponseBody
+    public Object jsonpInfo(String callback,Integer userId) throws IOException {
+        User user = userService.getUserByIdTest(userId);
+        JSONPObject jsonpObject = new JSONPObject(callback,user) ;
+        return jsonpObject ;
+    }
+    
+    //测试dubbo调用
+    @RequestMapping(value = "/insert",method = { RequestMethod.GET })
+    @ResponseBody
+    public void insert(){
+    	User user = new User();
+    	user.setAge(12);
+    	user.setPassword("123456");
+    	user.setUserName("测试dubbo");
+    	dubboTestService.insert(user);
     }
 
 }
