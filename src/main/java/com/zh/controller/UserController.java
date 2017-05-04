@@ -37,9 +37,9 @@ public class UserController {
     @Resource  
     private IUserService userService; 
     
-	@Resource
-	//这里其实是由dubbo远程调用得到的对象
-	private DubboTestService dubboTestService;
+//	@Resource 
+	//这里其实是由dubbo远程调用得到的对象,如果zookeeper未开启，在这里注入会出现异常
+//	private DubboTestService dubboTestService;
 
 	
     // /user/test?id=1
@@ -149,14 +149,14 @@ public class UserController {
     }
     
     //测试dubbo调用
-    @RequestMapping(value = "/insert",method = { RequestMethod.GET })
-    @ResponseBody
-    public void insert(){
-    	User user = new User();
-    	user.setAge(12);
-    	user.setPassword("123456");
-    	user.setUserName("测试dubbo");
-    	dubboTestService.insert(user);
-    }
+//    @RequestMapping(value = "/insert",method = { RequestMethod.GET })
+//    @ResponseBody
+//    public void insert(){
+//    	User user = new User();
+//    	user.setAge(12);
+//    	user.setPassword("123456");
+//    	user.setUserName("测试dubbo");
+//    	dubboTestService.insert(user);
+//    }
 
 }

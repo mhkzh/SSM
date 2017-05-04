@@ -22,8 +22,8 @@ public class TestMyBatis {
 	//@Autowired(Spring)与@Resource(J2EE)都可以用来装配bean. 都可以写在字段上,或写在setter方法上。@Resource比较优雅
     @Resource  
     private IUserService userService; 
-    @Resource
-    private DubboTestService dubboTestService;
+//    @Resource
+//    private DubboTestService dubboTestService;
   
 //  @Before  
 //  public void before() {  
@@ -52,8 +52,8 @@ public class TestMyBatis {
     	User user = new User();
     	user.setAge(12);
     	user.setPassword("123456");
-    	user.setUserName("测试dubbo");
-    	dubboTestService.insert(user);
+    	user.setUserName("测试插入");
+    	userService.insert(user);
     }
 
 }

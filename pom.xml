@@ -7,13 +7,27 @@
   <!-- artifactId 是该项目在项目组中的ID -->
   <artifactId>mavenDemo</artifactId>
   <!--项目产生的构件类型，例如jar、war、ear、pom。插件可以创建他们自己的构件类型，所以前面列的不是全部构件类型-->  
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <!-- ersion 是项目的版本号，用于维护项目的升级和发布 -->
   <version>0.0.1-SNAPSHOT</version>
   <!--  一般没有实际的用处，只是用于标识该项目 -->
   <name>mavenDemo Maven Webapp</name>
   <!--项目主页的URL, Maven产生的文档用-->  
   <url>http://maven.apache.org</url>
+  <!-- 项目发布 -->
+  <distributionManagement>  
+        <repository>  
+            <id>user-release</id>  
+            <name>User Project Release</name>  
+            <url>http://172.16.5.36:8081/nexus/content/repositories/releases/</url>  
+        </repository>  
+  
+        <snapshotRepository>  
+            <id>user-snapshots</id>  
+            <name>User Project SNAPSHOTS</name>  
+            <url>http://172.16.5.36:8081/nexus/content/repositories/snapshots/</url>  
+        </snapshotRepository>  
+    </distributionManagement>  
   
   <!-- 在spring的依赖中，我们需要引用一系列版本的spring，如版本4.0.2.RELEASE，每次都写不利于维护，
      所以使用properties标签来统一维护版本号，这样有利于维护，不用大量修改，引用格式 <version>${spring.version}</version> -->
@@ -30,7 +44,7 @@
         <log4j.version>1.2.17</log4j.version> 
         <druid-version>1.0.28</druid-version> 
   </properties> 
-  
+   
   <!-- 该元素描述了项目相关的所有依赖。 这些依赖组成了项目构建过程中的一个个环节。 -->
   <dependencies>
       <dependency>
@@ -40,11 +54,12 @@
       <!-- 表示开发的时候引入，发布的时候不会加载此包 -->  
    <!-- <scope>test</scope> -->   
     </dependency>
- <!-- <dependency>
+   
+     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
-     </dependency> -->
+     </dependency> 
      
    <!-- spring核心包 -->  
    <!-- 这个jar文件包含Spring框架基本的核心工具类，Spring其它组件要都要使用到这个包里的类，是其它组件的基本核心，当然你也可以在自己的应用系统中使用这些工具类。 -->
@@ -105,7 +120,7 @@
             <artifactId>cglib</artifactId>
             <version>2.2</version>
         </dependency>
-    <!-- redies start -->    
+    <!-- redis start -->    
         <dependency>  
             <groupId>org.springframework.data</groupId>  
             <artifactId>spring-data-redis</artifactId>  
@@ -320,6 +335,13 @@
                     </httpConnector>
                     <stopKey>shutdown</stopKey>
                     <stopPort>9966</stopPort>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                  <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
